@@ -47,8 +47,37 @@
   <input type="text" id="number" placeholder="Enter phone number">
   <button onclick="checkNumber()">Check</button>
 
-  <audio id="sound" src="Sound/click.mp3"></audio>
+  <script>
+function playClickSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
 
+  osc.type = "square";
+  osc.frequency.value = 800; // click tone
+  gain.gain.value = 0.1;
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start();
+  osc.stop(ctx.currentTime + 0.08); // very short click
+}
+
+function checkNumber() {
+  const number = document.getElementById("number").value;
+
+  if (number === "") {
+    alert("Please enter a number");
+    return;
+  }
+
+  playClickSound(); // 🔊 SOUND HERE
+
+  document.getElementById("result").innerText =
+    "Number Checked: " + number;
+}
+</script>
   <pre id="result"></pre>
 
   <script>
